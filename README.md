@@ -208,7 +208,3 @@ The sample database includes:
 | **Extensible** | Swap SQLite for Snowflake/BigQuery, add Slack/Teams bot, deploy with LangServe |
 
 ---
-
-## 📄 License
-
-MIT License — free for personal and commercial use.
