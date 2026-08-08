@@ -1,0 +1,29 @@
+{
+  "examples": [
+    {
+      "input": "Top 5 products by revenue in Q2 2024",
+      "sql": "SELECT p.product_name, SUM(o.quantity * o.unit_price) as revenue\nFROM orders o\nJOIN products p ON o.product_id = p.product_id\nWHERE o.order_date >= '2024-04-01' AND o.order_date < '2024-07-01'\nGROUP BY p.product_id\nORDER BY revenue DESC\nLIMIT 5;",
+      "explanation": "Joins orders and products, filters Q2 2024, aggregates revenue."
+    },
+    {
+      "input": "Monthly sales trend for 2024",
+      "sql": "SELECT strftime('%Y-%m', order_date) as month, SUM(quantity * unit_price) as revenue\nFROM orders\nWHERE order_date >= '2024-01-01'\nGROUP BY month\nORDER BY month;",
+      "explanation": "Groups by month using SQLite strftime, sums revenue."
+    },
+    {
+      "input": "Customers who spent more than $5000",
+      "sql": "SELECT c.customer_name, SUM(o.quantity * o.unit_price) as total_spent\nFROM customers c\nJOIN orders o ON c.customer_id = o.customer_id\nGROUP BY c.customer_id\nHAVING total_spent > 5000\nORDER BY total_spent DESC;",
+      "explanation": "Uses HAVING clause to filter aggregated spend."
+    },
+    {
+      "input": "Which region has the highest order cancellation rate?",
+      "sql": "SELECT r.region_name, r.country,\n       COUNT(CASE WHEN o.status = 'cancelled' THEN 1 END) * 100.0 / COUNT(*) as cancellation_rate\nFROM orders o\nJOIN customers c ON o.customer_id = c.customer_id\nJOIN regions r ON c.region_id = r.region_id\nGROUP BY r.region_id\nORDER BY cancellation_rate DESC\nLIMIT 1;",
+      "explanation": "Calculates cancellation percentage per region using conditional counting."
+    },
+    {
+      "input": "Average order value by product category",
+      "sql": "SELECT p.category, AVG(o.quantity * o.unit_price) as avg_order_value\nFROM orders o\nJOIN products p ON o.product_id = p.product_id\nGROUP BY p.category\nORDER BY avg_order_value DESC;",
+      "explanation": "Joins orders with products and computes average order value per category."
+    }
+  ]
+}
